@@ -7,6 +7,7 @@ class PredictionController < ApplicationController
   	pred = Prediction.new
   	puts 'ULTIMOOOOOOOOOOOOOOOOOOOOOOOOO'
   	puts @david = pred.predict_by_coordinates(@lat, @long, @period)
+    #localhost:3000/weather/prediction/-37.83/144.98/10
   end
 
   def by_postcode

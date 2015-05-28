@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   get '/weather/prediction/:lat/:long/:period' => 'prediction#by_lat_long', constraints: { lat: /[^\/]+/, long: /[^\/]+/ }
   get '/weather/prediction/:post_code/:period' => 'prediction#by_postcode'
 
-  get '/weather/data/:location_id/:date' => 'data#by_location_id'
+  get '/weather/data/:location_id/:date(.:format)' => 'data#by_location_id'
   get '/weather/data/:post_code/:date' => 'data#by_postcode'
 
   get '/weather/locations' => 'location#retrieve_locations'
