@@ -5,8 +5,8 @@ class PredictionController < ApplicationController
   	@period = params[:period].to_i
 
   	pred = Prediction.new
-  	
   	@probabilities, @predictions = pred.predict_by_coordinates(@lat, @long, @period)
+
   end
 
   def by_postcode

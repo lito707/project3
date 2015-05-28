@@ -13,4 +13,17 @@ class Datum < ActiveRecord::Base
 		self.wind_direction = elements[:wind_dir]
 		self.wind_speed = elements[:wind_speed]
 	end
+
+	def compute_condition
+
+
+		return string
+	end
+
+	def get_last_data
+
+		@Datum=Datum.new
+		return @Datum.last
+	end 
+
 end
