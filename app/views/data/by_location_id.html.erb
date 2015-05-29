@@ -20,9 +20,9 @@
   <% @data_array.each_with_index  do |data,index| %>
   <tr>      
         <td class="tg-031e"><%= @date %></td>
-        <td class="tg-vn4c"><%=@data_array.last.temperature  %></td>
+        <td class="tg-vn4c"><%=@last_temperature  %></td>
         <td class="tg-vn4c"><%=  %></td>
-        <td class="tg-vn4c"><%=data.created_at.strftime("%I:%M:%S %p")  %></td>
+        <td class="tg-vn4c"><%=data.created_at.strftime("%I:%M:%S %p") %></td>
         <td class="tg-vn4c"><%=data.temperature %></td>
         <td class="tg-vn4c"><%=data.rainfall %></td>
         <td class="tg-vn4c"><%=data.wind_direction %></td>

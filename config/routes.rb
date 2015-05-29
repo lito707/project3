@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   get '/weather/prediction/:post_code/:period' => 'prediction#by_postcode'
 
   get '/weather/data/:location_id/:date(.:format)' => 'data#by_location_id'
-  get '/weather/data/:post_code/:date' => 'data#by_postcode'
+  get '/weather/data/:post_code/:date(.:format)' => 'data#by_postcode'
 
   get '/weather/locations' => 'location#retrieve_locations'
 

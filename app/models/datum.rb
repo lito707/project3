@@ -1,3 +1,5 @@
+require 'json'
+
 class Datum < ActiveRecord::Base
 	belongs_to :location
 
@@ -25,5 +27,12 @@ class Datum < ActiveRecord::Base
 		@Datum=Datum.new
 		return @Datum.last
 	end 
+	def to_json(date)
+
+	measurements_details = {'time' => a[1], 'temp' => temperature, 'precip' => rainfall, 'wind_direction' => wind_direction, 'wind_speed' => wind_speed }
+	data_details = {'date' => date, 'current_temp' => a[2] , 'current_cond' => 'sunny', 'measurements' => measurements_details}	
+
+	return data_details.to_json 	 
+	end
 
 end

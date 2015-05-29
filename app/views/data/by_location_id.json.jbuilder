@@ -1,3 +1,3 @@
 json.array!(@data_array) do |data|
-  json.extract! data, :data.temperature
+  json.extract! data, :id, :contents
 end
