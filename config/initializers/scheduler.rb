@@ -2,7 +2,7 @@ require 'rufus-scheduler'
 
 s = Rufus::Scheduler.singleton
 
-s.every '30m' do
+s.every '10m' do
 
   @locations = Location.all
   @locations.each do |place|
