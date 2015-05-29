@@ -84,8 +84,6 @@ postcode_array.each do |p|
 	postcode.save
 end
 
-
-
 location_array.each do |l|
 	location = Location.new
 	location.location_id = l["location_id"]
@@ -93,5 +91,13 @@ location_array.each do |l|
 	location.long = l["long"]
 	location.postcode_id = l["postcode_id"]
 	location.save 
+end
+
+Location.all.each do |place|
+    datum = Datum.new
+    datum.set_data(place)
+    datum.save
+    datum.set_condition(place)
+    datum.save
 end
 

@@ -2,7 +2,7 @@ require 'rufus-scheduler'
 
 s = Rufus::Scheduler.singleton
 
-s.every '10m' do
+s.every '1m' do
 
   @locations = Location.all
   @locations.each do |place|
@@ -10,7 +10,7 @@ s.every '10m' do
     datum = Datum.new
 
     datum.set_data(place)
-
+    datum.set_condition(place)
     datum.save
   end
 end
