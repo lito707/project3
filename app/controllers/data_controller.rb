@@ -1,4 +1,5 @@
 class DataController < ApplicationController
+
   def retrieve_data code_id, date
 
   	#return Hash
@@ -24,7 +25,7 @@ class DataController < ApplicationController
   	#http://localhost:3000/weather/data/3/27-5-2015
   	respond_to do |format|
        format.html
-       format.json{ render json: @data_array.to_json(@date) }
+       format.json{ render json: @data_array.to_json }
     end
 
    end
@@ -34,6 +35,13 @@ class DataController < ApplicationController
 
     @post_code = params[:post_code].to_i 
     @date= params[:date]
+    postcodes=Postcodes.all.find_by(code_id: @post_code)
+    location=Location.all.where(postcode_id: postcodes.id)
+    
+    @data_array=Datum.new.get_last_data(location,@date)
+
+
+
 
 
 
