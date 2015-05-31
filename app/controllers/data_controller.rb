@@ -1,6 +1,6 @@
 class DataController < ApplicationController
 
-  def retrieve_data code_id, date
+	def retrieve_data code_id, date
 
   	#return Hash
   end
@@ -10,41 +10,57 @@ class DataController < ApplicationController
   	#return hash
   end
 
+
   def by_location_id
 
-  	@location_id = params[:location_id]
+  	@value = params[:parameter].to_s
   	@date = params[:date]
-  	location=Location.all.find_by(location_id: @location_id)
-  	@data_array=Datum.new.get_last_data(location,@date)
-  	
-  	@last_temperature=@data_array.last.temperature
-  	a=Array.new
-  	a[0]=@date
-  	a[1]=@last_temperature.to_s
+  	@data_array=[]
 
-  	#http://localhost:3000/weather/data/3/27-5-2015
-  	respond_to do |format|
-       format.html
-       format.json{ render json: @data_array.to_json }
-    end
+  	if @value.is_integer?
+  		@title="by Postcode"
 
-   end
+  		if Postcode.all.find_by(code_id: @value)==nil
+  			flash[:notice] = "Postcode not available"
+  		else
+  			postcodes=Postcode.all.find_by(code_id: @value)
+  			#postcodes.locations
+  			@locations=Location.all.where(postcode_id: postcodes.id)
+
+  			@locations.each_with_index  do |loc,index|
+  				@data_array<<Datum.new.get_last_data(loc,@date)
+  			end
+  			@data_array=@data_array.flatten
+  		end
+
+  	else
+
+  		@title="by Location"
+  		if Location.all.find_by(location_id: @value)==nil
+  			flash[:notice] = "Location not available"
+
+  		else
+  			location=Location.all.find_by(location_id: @value)
+  			@data_array=Datum.new.get_last_data(location,@date)
+  		end
 
 
-    def by_postcode
+  	end  	
+  	#@last_temperature=@data_array.last.temperature
+  	#a=Array.new
+  	#a[0]=@date
+  	#a[1]=@last_temperature.to_s
 
-    @post_code = params[:post_code].to_i 
-    @date= params[:date]
-    postcodes=Postcodes.all.find_by(code_id: @post_code)
-    location=Location.all.where(postcode_id: postcodes.id)
-    
-    @data_array=Datum.new.get_last_data(location,@date)
+  	#http://localhost:3000/weather/data/tMAL-station-charlton/27-5-2015
+  	#http://localhost:3000/weather/data/3960/29-5-2015
+  
 
+  end
 
+end
+class String
 
-
-
-
-    end
-
+	def is_integer?
+		self.to_i.to_s == self
+	end
 end

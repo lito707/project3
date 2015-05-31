@@ -1,8 +1,12 @@
 <meta http-equiv="refresh" content="250">
 <center>
-<h1>Data by_location</h1>
+<h1>Data <%= @title %></h1>
 
 <%= render 'form' %>
+
+<% if flash[:notice] %>
+    <div class="notice"><%= flash[:notice] %></div>
+  <% end %>
 
 
 <table class="tg">
