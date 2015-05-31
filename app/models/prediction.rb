@@ -22,7 +22,7 @@ class Prediction < ActiveRecord::Base
 				end
 				probabilities[i] = (first_prob[i]*factors[0] + second_prob[i]*factors[1] + third_prob[i]*factors[2])/(factors[0]+factors[1]+factors[2])
 			end
-			return results, probabilities
+			return probabilities, results
 		end
 	end
 
@@ -35,7 +35,8 @@ class Prediction < ActiveRecord::Base
 		return [dist1/sum_distances, dist2/sum_distances, dist3/sum_distances]
 	end
 
-	def get_all_predictions(location, period) # get an array of 4 arrays with the predicted values of wind speed, wind dir, temp and rainfall
+	# get an array of 4 arrays with the predicted values of wind speed, wind dir, temp and rainfall
+	def get_all_predictions(location, period)
 		data = location_data(location, period)
 
 		rain_model = find_model(data[:rain])
@@ -50,7 +51,7 @@ class Prediction < ActiveRecord::Base
 		c = predict(wind_speed_model, period).map {|x| x.round(2)}
 		d = predict(temperature_model, period).map {|x| x.round(2)}
 
-		return [a,b,c,d], probabilities
+		return probabilities, [a,b,c,d]
 	end
 
 	def location_data(location, period)

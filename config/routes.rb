@@ -5,7 +5,8 @@ Rails.application.routes.draw do
 
   get '/weather/data/:field/:date(.:format)' => 'data#by_field',defaults: { format: :json }
 
-  # get '/weather/locations' => 'location#retrieve_locations',defaults: { format: :json }
+  get '/w
+  eather/locations' => 'location#retrieve_locations',defaults: { format: :json }
 
 
   # The priority is based upon order of creation: first created -> highest priority.
