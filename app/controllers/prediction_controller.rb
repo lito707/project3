@@ -15,13 +15,10 @@ class PredictionController < ApplicationController
 
   	@postcode = Postcode.all.find_by(code_id: code)
 
-    @predictions_n_probs = []
-    @locations = []
+    @all_data = []
 
-    @postcode.locations.each_with_index do |location, i|
-      @locations[i] = location
-      @predictions_n_probs[i] = Prediction.new.predict_by_coordinates(location.lat, location.long, @period)
-      puts @locations
+    @postcode.locations.each do |location|
+      @all_data << [location].concat(Prediction.new.predict_by_coordinates(location.lat, location.long, @period))
     end
   end
 end
