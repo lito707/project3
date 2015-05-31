@@ -7,8 +7,8 @@ Rails.application.routes.draw do
 
   get 'prediction/retrieve_prediction'
 
-  get '/weather/prediction/:lat/:long/:period' => 'prediction#by_lat_long', constraints: { lat: /[^\/]+/, long: /[^\/]+/ }
-  get '/weather/prediction/:post_code/:period' => 'prediction#by_postcode'
+  get '/weather/prediction/:lat/:long/:period' => 'prediction#by_lat_long', constraints: { lat: /[^\/]+/, long: /[^\/]+/ }, defaults: { format: :json }
+  get '/weather/prediction/:post_code/:period' => 'prediction#by_postcode', defaults: { format: :json }
 
   get '/weather/data/:location_id/:date(.:format)' => 'data#by_location_id'
   get '/weather/data/:post_code/:date(.:format)' => 'data#by_postcode'

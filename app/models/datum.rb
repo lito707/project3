@@ -26,9 +26,9 @@ class Datum < ActiveRecord::Base
 	end
 
 	def compute_condition(data)
-		rain = data.last.rainfall
-		wind = data.last.wind_speed
-		temp = data.last.temperature
+		rain = self.rainfall
+		wind = self.wind_speed
+		temp = self.temperature
 		if !data[-2].nil?
 			previous_rain = data[-2].rainfall
 		else
@@ -52,7 +52,7 @@ class Datum < ActiveRecord::Base
 
 		if wind > 10
 			cond = 'breezy'
-			if  wind > 40
+			if  wind > 35
 				cond = 'windy'
 			end
 			return cond
@@ -60,7 +60,7 @@ class Datum < ActiveRecord::Base
 
 		if temp < 10
 			cond = 'cloudy'
-		elsif Time.now.hour < 17 #Assuming winter season
+		elsif Time.now.hour < 17 && Time.now.hour > 7 #Assuming winter season
 			cond = 'sunny'
 		end
 		return cond

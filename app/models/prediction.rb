@@ -43,10 +43,10 @@ class Prediction < ActiveRecord::Base
 
 		probabilities = [rain_model[:probability],wind_dir_model[:probability],wind_speed_model[:probability],temperature_model[:probability]]
 
-		a = predict(rain_model, period)
-		b = predict(wind_dir_model, period)
-		c = predict(wind_speed_model, period)
-		d = predict(temperature_model, period)
+		a = predict(rain_model, period).map {|x| x.round(2)}
+		b = predict(wind_dir_model, period).map {|x| x.round(2)}
+		c = predict(wind_speed_model, period).map {|x| x.round(2)}
+		d = predict(temperature_model, period).map {|x| x.round(2)}
 
 		return probabilities, [a,b,c,d]
 	end
