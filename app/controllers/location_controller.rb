@@ -3,5 +3,4 @@ class LocationController < ApplicationController
     @locations = Location.all
   end
 
-  
 end
