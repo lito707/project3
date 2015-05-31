@@ -12,10 +12,13 @@ class DataController < ApplicationController
 
 
   def by_location_id
+    #http://localhost:3000/weather/data/tMAL-station-charlton/27-5-2015
+    #http://localhost:3000/weather/data/3960/29-5-2015
 
   	@value = params[:parameter].to_s
   	@date = params[:date]
-  	@data_array=[]
+    @data_array=[]
+
 
   	if @value.is_integer?
   		@title="by Postcode"
@@ -24,13 +27,12 @@ class DataController < ApplicationController
   			flash[:notice] = "Postcode not available"
   		else
   			postcodes=Postcode.all.find_by(code_id: @value)
-  			#postcodes.locations
   			@locations=Location.all.where(postcode_id: postcodes.id)
 
   			@locations.each_with_index  do |loc,index|
-  				@data_array<<Datum.new.get_last_data(loc,@date)
+  				@data_array<<[loc,Datum.new.get_last_data(loc,@date)]
   			end
-  			@data_array=@data_array.flatten
+
   		end
 
   	else
@@ -45,14 +47,7 @@ class DataController < ApplicationController
   		end
 
 
-  	end  	
-  	#@last_temperature=@data_array.last.temperature
-  	#a=Array.new
-  	#a[0]=@date
-  	#a[1]=@last_temperature.to_s
-
-  	#http://localhost:3000/weather/data/tMAL-station-charlton/27-5-2015
-  	#http://localhost:3000/weather/data/3960/29-5-2015
+  	end  	 	
   
 
   end

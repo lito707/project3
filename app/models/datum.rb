@@ -65,20 +65,13 @@ class Datum < ActiveRecord::Base
 		end
 		return cond
 	end
-
+	#gets all the data from the date
 	def get_last_data(location, date)
 		temporal=date.split(/-/)
 	  	true_date=Date.new(temporal[2].to_i,temporal[1].to_i,temporal[0].to_i)
 	  	temp=Datum.where(["created_at >= ? AND created_at <= ?",true_date.beginning_of_day, true_date.end_of_day])
 	  	
 	  	return data_array=temp.where(location_id: location.id)
-	end
-
-	def to_json(date)
-		measurements_details = {'time' => created_at.strftime("%I:%M:%S %p"), 'temp' => temperature, 'precip' => rainfall, 'wind_direction' => wind_direction, 'wind_speed' => wind_speed }
-		data_details = {'date' => date, 'current_temp' => a[2] , 'current_cond' => 'sunny', 'measurements' => measurements_details}	
-
-		return data_details.to_json 	 
 	end
 
 end
