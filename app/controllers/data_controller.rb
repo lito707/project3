@@ -17,7 +17,6 @@ class DataController < ApplicationController
   	@date = params[:date]
   	@data_array=[]
 
-
   	if @value.is_integer?
   		@title="by Postcode"
 

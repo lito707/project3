@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
   get 'data/get_location_data'
 
-  get 'location/retrieve_locations'
+  get 'location/retrieve_locations' => 'location#index'
 
   get 'prediction/retrieve_prediction'
 
@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   get '/weather/data/:parameter/:date(.:format)' => 'data#by_location_id',defaults: { format: :json }
 
   get '/weather/locations' => 'location#retrieve_locations',defaults: { format: :json }
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
