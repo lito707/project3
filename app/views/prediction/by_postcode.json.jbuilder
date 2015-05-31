@@ -4,7 +4,6 @@ json.prettify!
 	json.location_id location.location_id
 	json.predictions do
 		json.set (0..@period/10).to_a.each do |j|	
-
 		  json.rain do 
 		  	json.value predictions[0][j]
 		  	json.probability probabilities[0]
@@ -20,7 +19,6 @@ json.prettify!
 		  json.temp do 
 		  	json.value predictions[3][j]
 		  	json.probability probabilities[3]
-
 		  end
 		end
 	end
