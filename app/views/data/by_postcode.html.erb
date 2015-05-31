@@ -1,0 +1,34 @@
+<meta http-equiv="refresh" content="250">
+<center>
+<h1>Data by_location</h1>
+
+<%= render 'form' %>
+
+
+<table class="tg">
+
+  <tr>
+    <th class="tg-031e">Date</th>
+    <th class="tg-031e">Current_temp</th>
+    <th class="tg-031e">Current_cond</th>
+    <th class="tg-031e">Measurements_time</th>
+    <th class="tg-031e">Measurements_temp</th>
+    <th class="tg-031e">Measurements_precip</th>
+    <th class="tg-031e">Measurements_wind_direction</th>
+    <th class="tg-031e">Measurements_wind_speed</th>
+  </tr>
+  <% @data_array.each_with_index  do |data1,index| %>
+  <% data1.each_with_index  do |data,index2| %>
+  <tr>      
+        <td class="tg-031e"><%= @date %></td>
+        <td class="tg-vn4c"><%=  %></td>
+        <td class="tg-vn4c"><%=  %></td>
+        <td class="tg-vn4c"><%=data.created_at.strftime("%I:%M:%S %p") %></td>
+        <td class="tg-vn4c"><%=data.temperature %></td>
+        <td class="tg-vn4c"><%=data.rainfall %></td>
+        <td class="tg-vn4c"><%=data.wind_direction %></td>
+        <td class="tg-vn4c"><%=data.wind_speed  %></td>
+        
+  </tr>
+  <% end %>
+  <% end %>
