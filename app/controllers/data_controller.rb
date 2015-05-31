@@ -1,29 +1,19 @@
 class DataController < ApplicationController
 
-	def retrieve_data code_id, date
-
-  	#return Hash
-  end
-
-  def get_location_data code_id
-
-  	#return hash
-  end
-
-
-  def by_location_id
-
-  	@value = params[:parameter].to_s
+	# displays data by a certain field
+	def by_field
+  	@field = params[:field].to_s
   	@date = params[:date]
   	@data_array=[]
 
-  	if @value.is_integer?
+		# check whether the field is a postcode
+  	if @field.is_integer?
   		@title="by Postcode"
 
-  		if Postcode.all.find_by(code_id: @value)==nil
+  		if Postcode.all.find_by(code_id: @field)==nil
   			flash[:notice] = "Postcode not available"
   		else
-  			postcodes=Postcode.all.find_by(code_id: @value)
+  			postcodes=Postcode.all.find_by(code_id: @field)
   			#postcodes.locations
   			@locations=Location.all.where(postcode_id: postcodes.id)
 
@@ -36,28 +26,20 @@ class DataController < ApplicationController
   	else
 
   		@title="by Location"
-  		if Location.all.find_by(location_id: @value)==nil
+  		if Location.all.find_by(location_id: @field)==nil
   			flash[:notice] = "Location not available"
 
   		else
-  			location=Location.all.find_by(location_id: @value)
+  			location=Location.all.find_by(location_id: @field)
   			@data_array=Datum.new.get_last_data(location,@date)
   		end
 
-
-  	end  	
-  	#@last_temperature=@data_array.last.temperature
-  	#a=Array.new
-  	#a[0]=@date
-  	#a[1]=@last_temperature.to_s
-
-  	#http://localhost:3000/weather/data/tMAL-station-charlton/27-5-2015
-  	#http://localhost:3000/weather/data/3960/29-5-2015
-  
+  	end
 
   end
 
 end
+
 class String
 
 	def is_integer?

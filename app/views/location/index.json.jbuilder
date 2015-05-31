@@ -1,4 +1,3 @@
-puts "locations:"
 json.prettify!
 json.date Date.today
 json.locations (@locations) do |location|
