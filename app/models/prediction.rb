@@ -22,7 +22,7 @@ class Prediction < ActiveRecord::Base
 				end
 				probabilities[i] = (first_prob[i]*factors[0] + second_prob[i]*factors[1] + third_prob[i]*factors[2])/(factors[0]+factors[1]+factors[2])
 			end
-			return probabilities, results
+			return results, probabilities
 		end
 	end
 
@@ -50,7 +50,7 @@ class Prediction < ActiveRecord::Base
 		c = predict(wind_speed_model, period).map {|x| x.round(2)}
 		d = predict(temperature_model, period).map {|x| x.round(2)}
 
-		return probabilities, [a,b,c,d]
+		return [a,b,c,d], probabilities
 	end
 
 	def location_data(location, period)
