@@ -16,7 +16,7 @@ class DataController < ApplicationController
   	@date = params[:date]
   	location=Location.all.find_by(location_id: @location_id)
   	@data_array=Datum.new.get_last_data(location,@date)
-  	
+
   	@last_temperature=@data_array.last.temperature
   	a=Array.new
   	a[0]=@date
@@ -33,17 +33,12 @@ class DataController < ApplicationController
 
     def by_postcode
 
-    @post_code = params[:post_code].to_i 
+    @post_code = params[:post_code].to_i
     @date= params[:date]
     postcodes=Postcodes.all.find_by(code_id: @post_code)
     location=Location.all.where(postcode_id: postcodes.id)
-    
+
     @data_array=Datum.new.get_last_data(location,@date)
-
-
-
-
-
 
     end
 
