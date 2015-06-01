@@ -8,6 +8,7 @@ class DataController < ApplicationController
   	@field = params[:field].to_s
   	@date = params[:date]
     @data_array=[]
+
 		# check whether the field is a postcode
   	if @field.is_integer?
   		@title="by Postcode"
@@ -21,7 +22,7 @@ class DataController < ApplicationController
   			@locations.each_with_index  do |loc,index|
   				@data_array<<[loc,Datum.new.get_last_data(loc,@date)]
   			end
-
+			
   		end
 
   	else
@@ -32,11 +33,16 @@ class DataController < ApplicationController
 
   		else
   			location=Location.all.find_by(location_id: @field)
+
   			@data_array=Datum.new.get_last_data(location,@date)
+				if @data_array.size==0
+					flash[:notice] = "Data not available on that date"
+
+				end
   		end
 
-  	end  	 	
-  
+  	end
+
 
   end
 

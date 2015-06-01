@@ -4,7 +4,8 @@ class Prediction < ActiveRecord::Base
 	def predict_by_coordinates(lat, long, period)
 		locations_w_dist = get_closest_locations(lat, long)
 
-		if locations_w_dist.first[1] == 0 # Distance == 0, it matches exactly with a location of the database
+		# Distance == 0, it matches exactly with a location of the database
+		if locations_w_dist.first[1] == 0
 			get_all_predictions(locations_w_dist.first[0], period)
 		else
 			results = [[],[],[],[]]
@@ -15,7 +16,7 @@ class Prediction < ActiveRecord::Base
 			third_prob, third_set = get_all_predictions(locations_w_dist[2][0], period)
 
 			factors = get_factors(locations_w_dist)
-
+			puts first_set.inspect
 			(0...first_set.length).to_a.each do |i|
 				(0...first_set[i].length).to_a.each do |j|
 					results[i][j] = (first_set[i][j]*factors[0] + second_set[i][j]*factors[1] + third_set[i][j]*factors[2])/(factors[0]+factors[1]+factors[2])
