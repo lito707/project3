@@ -57,7 +57,7 @@ class Datum < ActiveRecord::Base
 		end
 		return cond
 	end
-	
+
 	# retrieve data entry from a location on a certain date
 	def get_last_data(location, date)
 		d=date.split(/-/)
