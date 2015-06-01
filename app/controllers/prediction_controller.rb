@@ -24,6 +24,7 @@ class PredictionController < ApplicationController
                             (Prediction.new.predict_by_coordinates(location.lat,
                             location.long, @period))
       end
+      puts @all_data
     end
   end
 
