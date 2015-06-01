@@ -1,6 +1,12 @@
 require 'statsample' # To get linear regression coefficients readily
 require 'matrix'
-
+# Authors
+# Dimas Antony Chacon Salas - 659825
+# Tou Lee - 656128
+# David Monroy - 610346
+# Jhon Manuel Portella Delgado - 680794
+# ___________________________________________
+# Regression model used to make predictions
 class Regression
 	def get_linear_coeffs
 		regress = Statsample::Regression::Simple.new_from_vectors(@xs.to_scale, @ys.to_scale)

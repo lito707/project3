@@ -1,3 +1,9 @@
+# Authors
+# Dimas Antony Chacon Salas - 659825
+# Tou Lee - 656128
+# David Monroy - 610346
+# Jhon Manuel Portella Delgado - 680794
+# ___________________________________________
 URL = 'http://www.bom.gov.au/vic/observations/vicall.shtml'
 
 CARDINAL_TO_DEGREES = {"CALM"=>0, "N"=>0, "NNE"=>22, "NE"=>45, "ENE"=>67, "E"=>90, "ESE"=>112, "SE"=>135, "SSE"=>157, "S"=>180, "SSW"=>202, "SW"=>225, "WSW"=>247, "W"=>270, "WNW"=>292, "NW"=>315, "NNW"=>337}
