@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150601115033) do
+ActiveRecord::Schema.define(version: 20150601120103) do
 
   create_table "data", force: :cascade do |t|
     t.float    "rainfall"
