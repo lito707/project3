@@ -20,11 +20,8 @@ class PredictionController < ApplicationController
       @postcode = Postcode.all.find_by(code_id: code)
       @all_data = []
       @postcode.locations.each do |location|
-        @all_data << [location].concat
-                            (Prediction.new.predict_by_coordinates(location.lat,
-                            location.long, @period))
+        @all_data << [location].concat(Prediction.new.predict_by_coordinates(location.lat, location.long, @period))
       end
-      puts @all_data
     end
   end
 

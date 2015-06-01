@@ -18,7 +18,7 @@ class Scrapper < ActiveRecord::Base
 
 		FIELDS.each_with_index do |category, index|
 			s = '#'+ zone +' tbody td[headers="'+ zone + category + ' ' + name + '"]'
-			temp_array[index] = doc.css(s).text7
+			temp_array[index] = doc.css(s).text
 		end
 		s = '#'+ zone +' tbody td[headers="'+ zone + '-wind '+ zone + '-wind-dir ' + name + '"]'
 		temp_array[2] = doc.css(s).text
