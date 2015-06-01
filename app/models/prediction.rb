@@ -64,6 +64,7 @@ class Prediction < ActiveRecord::Base
 		return [a,b,c,d], probabilities
 	end
 
+	#get the values of wind dir, wind speed and temperature depending on period
 	def location_data(location, period)
 
 		raw_data = {:rain=>[],:wind_dir=>[],:wind_speed=>[],:temperature=>[]}
@@ -81,11 +82,13 @@ class Prediction < ActiveRecord::Base
 
 	end
 
+	# find the best fit model for a parameter data
 	def find_model(data)
 		regression = Regression.new
 		return regression.best_fit(data)
 	end
 
+	# predict for a given period using a a specific model type
 	def predict(model, period)
 		predictions = []
 		val = model[:samples_size]+1
@@ -107,6 +110,7 @@ class Prediction < ActiveRecord::Base
 		return predictions
 	end
 
+	# get the closest locations depending on  a lattitude and longitude
 	def get_closest_locations(lat, long)
 		dist = {}
 		closest_locations = []
@@ -123,10 +127,5 @@ class Prediction < ActiveRecord::Base
 		end
 
 		return closest_locations # Returns an array of locations and its distances [[location, distance], ...]
-	end
-
-	def get_location(lat, long)
-		locations = Location.all
-		return locations.find {|location| location.lat == lat && location.long == long}
 	end
 end

@@ -1,3 +1,4 @@
+# controller for location class
 class LocationController < ApplicationController
   # retrieve all locations
   def retrieve_locations

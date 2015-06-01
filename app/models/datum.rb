@@ -15,7 +15,7 @@ class Datum < ActiveRecord::Base
 	# set the condtion from a location asked
 	def set_condition(location)
 		date = Time.now.day.to_s+'-'+Time.now.month.to_s+'-'+Time.now.year.to_s
-		last_data = get_last_data(location, date)
+		last_data = get_data(location, date)
 		self.current_condition = compute_condition(last_data)
 	end
 
@@ -59,7 +59,7 @@ class Datum < ActiveRecord::Base
 	end
 
 	# retrieve data entry from a location on a certain date
-	def get_last_data(location, date)
+	def get_data(location, date)
 		d=date.split(/-/)
 	  	true_date=Date.new(d[2].to_i,d[1].to_i,d[0].to_i)
 	  	data=Datum.where(["created_at >= ? AND created_at <= ?",true_date.beginning_of_day, true_date.end_of_day])
