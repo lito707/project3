@@ -19,12 +19,12 @@ class Regression
 	end
 
 	# Applying least squares fitting, guide from http://mathworld.wolfram.com/LeastSquaresFittingLogarithmic.html
-	def get_log_coeffs 
+	def get_log_coeffs
 		p = (0...@n).reduce(0) {|sum, i| sum + (@ys[i]*Math::log(@xs[i]))} # Sum {y*ln(x)}
 		q = (0...@n).reduce(0) {|sum, i| sum + @ys[i]} # Sum {y}
 		r = (0...@n).reduce(0) {|sum, i| sum + Math::log(@xs[i])} # Sum {ln(x)}
 		s = (0...@n).reduce(0) {|sum, i| sum + (Math::log(@xs[i]))**2} # Sum {ln(x)^2}
-		
+
 		b = (@n*p - q*r) / (@n*s - r**2)
 		a = (q - b*r) / @n
 
@@ -32,7 +32,7 @@ class Regression
 	end
 
 	# Applying least squares fitting, guide from http://mathworld.wolfram.com/LeastSquaresFittingExponential.html
-	def get_exp_coeffs 
+	def get_exp_coeffs
 		p = (0...@n).reduce(0) {|sum, i| sum + Math::log(@ys[i])} # Sum {ln(y)}
 		q = (0...@n).reduce(0) {|sum, i| sum + (@xs[i]**2)} # Sum {x^2}
 		r = (0...@n).reduce(0) {|sum, i| sum + @xs[i]}	# Sum {x}
@@ -49,7 +49,7 @@ class Regression
 		errors = []
 
 		(2..10).to_a.each do |degree|
-			errors[degree-2] = standard_error('polynomial', degree) 
+			errors[degree-2] = standard_error('polynomial', degree)
 		end
 
 		errors.index(errors.min) + 2 # Since indexes start with 0
@@ -61,7 +61,7 @@ class Regression
 			y_regressed = get_y_regressed(type, degree)
 
 			sse = (0...@n).reduce(0) {|sum, i| sum + ((@ys[i] - y_regressed[i])**2)} # Sum of square error
-			
+
 			standard_error = Math::sqrt(sse / @n)
 
 			if standard_error.nan?
@@ -88,21 +88,23 @@ class Regression
 			r = (@n*d - sum_ys*sum_y_regressed)/(Math.sqrt(((@n*e-sum_ys**2)*(@n*f-sum_y_regressed**2))))
 			r_2 = r**2
 
+
 			if r_2.nan?
 				@probability = 0.2
 				return @probability
-			else	
+			else
 				return r_2.round(2)
 			end
 
-		rescue Math::DomainError 	
-			return 0 	
+
+		rescue Math::DomainError
+			return 0
 		end
 	end
 
 	def get_y_regressed (type, degree = best_degree)
 		y_regressed = [] # Will contain the calculated ys from a regressed equation
-		
+
 		case type
 		when 'linear'
 			get_linear_coeffs
@@ -125,7 +127,7 @@ class Regression
 
 		return y_regressed
 	end
-	
+
 	# Compute the coefficients for a type of regression and print the respective equation
 	def evaluate(type)
 		info = Hash.new
@@ -137,12 +139,12 @@ class Regression
 
 			when 'polynomial'
 				info[:coeffs] = get_polynomial_coeffs(best_degree)
-					
+
 			when 'exponential'
 				info[:coeffs] = get_exp_coeffs
-				
+
 			when 'logarithmic'
-				info[:coeffs] = get_log_coeffs	
+				info[:coeffs] = get_log_coeffs
 
 			when 'best_fit' # chooses the regression with the smallest error
 				errors = Hash.new
@@ -150,9 +152,9 @@ class Regression
 				['linear', 'polynomial', 'logarithmic', 'exponential'].each do |kind|
 					errors[kind] = standard_error(kind)
 				end
-				
+
 				return evaluate(errors.key(errors.values.min))
-			end	
+			end
 
 			info[:type] = type
 			info[:degree] = best_degree
@@ -172,4 +174,4 @@ class Regression
 
 		return evaluate('best_fit')
 	end
-end 
+end

@@ -17,14 +17,14 @@ class Prediction < ActiveRecord::Base
 			third_set, third_prob = get_all_predictions(locations_w_dist[2][0], period)
 
 			factors = get_factors(locations_w_dist)
-	
+
 			(0...first_set.length).to_a.each do |i|
 				(0...first_set[i].length).to_a.each do |j|
 					results[i][j] = ((first_set[i][j]*factors[0] + second_set[i][j]*factors[1] + third_set[i][j]*factors[2])/(factors[0]+factors[1]+factors[2])).round(2)
 				end
 				probabilities[i] = ((first_prob[i]*factors[0] + second_prob[i]*factors[1] + third_prob[i]*factors[2])/(factors[0]+factors[1]+factors[2])).round(2)
 			end
-			
+
 			return results, probabilities
 		end
 	end
