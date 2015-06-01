@@ -11,18 +11,19 @@ class Prediction < ActiveRecord::Base
 			results = [[],[],[],[]]
 			probabilities = []
 
-			first_prob, first_set = get_all_predictions(locations_w_dist[0][0], period)
-			second_prob, second_set = get_all_predictions(locations_w_dist[1][0], period)
-			third_prob, third_set = get_all_predictions(locations_w_dist[2][0], period)
+			first_set, first_prob = get_all_predictions(locations_w_dist[0][0], period)
+			second_set, second_prob = get_all_predictions(locations_w_dist[1][0], period)
+			third_set, third_prob = get_all_predictions(locations_w_dist[2][0], period)
 
 			factors = get_factors(locations_w_dist)
-			puts first_set.inspect
+	
 			(0...first_set.length).to_a.each do |i|
 				(0...first_set[i].length).to_a.each do |j|
-					results[i][j] = (first_set[i][j]*factors[0] + second_set[i][j]*factors[1] + third_set[i][j]*factors[2])/(factors[0]+factors[1]+factors[2])
+					results[i][j] = ((first_set[i][j]*factors[0] + second_set[i][j]*factors[1] + third_set[i][j]*factors[2])/(factors[0]+factors[1]+factors[2])).round(2)
 				end
-				probabilities[i] = (first_prob[i]*factors[0] + second_prob[i]*factors[1] + third_prob[i]*factors[2])/(factors[0]+factors[1]+factors[2])
+				probabilities[i] = ((first_prob[i]*factors[0] + second_prob[i]*factors[1] + third_prob[i]*factors[2])/(factors[0]+factors[1]+factors[2])).round(2)
 			end
+			
 			return results, probabilities
 		end
 	end
@@ -52,6 +53,11 @@ class Prediction < ActiveRecord::Base
 		c = predict(wind_speed_model, period).map {|x| x.round(2)}
 		d = predict(temperature_model, period).map {|x| x.round(2)}
 
+		a.unshift(data[:rain].last)
+		b.unshift(data[:wind_dir].last)
+		c.unshift(data[:wind_speed].last)
+		d.unshift(data[:temperature].last)
+
 		return [a,b,c,d], probabilities
 	end
 
@@ -79,20 +85,20 @@ class Prediction < ActiveRecord::Base
 
 	def predict(model, period)
 		predictions = []
-		val = model[:samples_size]
+		val = model[:samples_size]+1
 		x = (val..val+(period/10)).to_a
 
 		case model[:type]
 		when 'linear'
-			(0..period/10).to_a.each {|i| predictions[i] = model[:coeffs][1]*x[i] + model[:coeffs][0]}
+			(0...period/10).to_a.each {|i| predictions[i] = model[:coeffs][1]*x[i] + model[:coeffs][0]}
 		when 'polynomial'
-			(0..period/10).to_a.each do |i|
+			(0...period/10).to_a.each do |i|
 				predictions[i] = (0..model[:degree]).reduce(0) {|sum, j| sum + (model[:coeffs][j]*(x[i]**j))}
 			end
 		when 'exponential'
-			(0..period/10).to_a.each {|i| predictions[i] = model[:coeffs][0]*(Math::E**(model[:coeffs][1]*x[i]))}
+			(0...period/10).to_a.each {|i| predictions[i] = model[:coeffs][0]*(Math::E**(model[:coeffs][1]*x[i]))}
 		when 'logarithmic'
-			(0..period/10).to_a.each {|i| predictions[i] = model[:coeffs][0] + (model[:coeffs][1]*Math::log(x[i]))}
+			(0...period/10).to_a.each {|i| predictions[i] = model[:coeffs][0] + (model[:coeffs][1]*Math::log(x[i]))}
 		end
 
 		return predictions
