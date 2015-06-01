@@ -11,7 +11,7 @@ else
 				json.set! j*10 do
 					json.time (Time.now+(j*10).minute).strftime("%I:%M%p %d-%m-%Y")
 					json.rain do
-						json.value predictions[0][j]
+						json.value predictions[0][j].to_s + "mm"
 						if j == 0
 							json.probability 1
 						else
@@ -19,7 +19,7 @@ else
 						end
 					end
 					json.wind_dir do
-						json.value predictions[1][j]
+						json.value predictions[1][j].to_s + "°"
 						if j == 0
 							json.probability 1
 						else
@@ -27,7 +27,7 @@ else
 						end
 					end
 					json.wind_speed do
-						json.value predictions[2][j]
+						json.value predictions[2][j].to_s
 						if j == 0
 							json.probability 1
 						else
@@ -35,7 +35,7 @@ else
 						end
 					end
 					json.temp do
-						json.value predictions[3][j]
+						json.value predictions[3][j].to_s
 						if j == 0
 							json.probability 1
 						else

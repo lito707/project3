@@ -8,7 +8,8 @@ class Prediction < ActiveRecord::Base
 		# Distance == 0, it matches exactly with a location of the database
 		if locations_w_dist.first[1] == 0
 			get_all_predictions(locations_w_dist.first[0], period)
-		else
+		
+		else #Proceed to calculate prediction by 3N method 
 			results = [[],[],[],[]]
 			probabilities = []
 
@@ -40,6 +41,7 @@ class Prediction < ActiveRecord::Base
 
 	# get an array of 4 arrays with the predicted values of wind speed, wind dir,
 	# temp and rainfall
+	# Output: [[rain_values, wind_dir_values, wind_speed_values, temp_values], [probabilities]]
 	def get_all_predictions(location, period)
 		data = location_data(location, period)
 
@@ -56,7 +58,7 @@ class Prediction < ActiveRecord::Base
 		c = predict(wind_speed_model, period).map {|x| x.round(2)}
 		d = predict(temperature_model, period).map {|x| x.round(2)}
 
-		a.unshift(data[:rain].last)
+		a.unshift(data[:rain].last) # insert the actual weather values in the first index
 		b.unshift(data[:wind_dir].last)
 		c.unshift(data[:wind_speed].last)
 		d.unshift(data[:temperature].last)
@@ -65,6 +67,7 @@ class Prediction < ActiveRecord::Base
 	end
 
 	#get the values of wind dir, wind speed and temperature depending on period
+	# Output: hashMap {rain: [], wind_dir: [], wind_speed: [], temperature: []}
 	def location_data(location, period)
 
 		raw_data = {:rain=>[],:wind_dir=>[],:wind_speed=>[],:temperature=>[]}
@@ -82,12 +85,14 @@ class Prediction < ActiveRecord::Base
 	end
 
 	# find the best fit model for a parameter data
+	# Input format: float array [1,2,3,4,...]
+	# Output: hashMap {type: string, probability: float,...}
 	def find_model(data)
 		regression = Regression.new
 		return regression.best_fit(data)
 	end
 
-	# predict for a given period using a a specific model type
+	# predict for a given period using a a specific model type, taking as much values as period
 	def predict(model, period)
 		predictions = []
 		val = model[:samples_size]+1
@@ -109,7 +114,7 @@ class Prediction < ActiveRecord::Base
 		return predictions
 	end
 
-	# get the closest locations depending on  a lattitude and longitude
+	# get the closest locations depending on a lattitude and longitude
 	def get_closest_locations(lat, long)
 		dist = {}
 		closest_locations = []
@@ -127,5 +132,4 @@ class Prediction < ActiveRecord::Base
 
 		return closest_locations # Returns an array of locations and its distances [[location, distance], ...]
 	end
-
 end
