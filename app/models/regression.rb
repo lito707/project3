@@ -88,9 +88,14 @@ class Regression
 			r = (@n*d - sum_ys*sum_y_regressed)/(Math.sqrt(((@n*e-sum_ys**2)*(@n*f-sum_y_regressed**2))))
 			r_2 = r**2
 
-			@probability = r_2
 
-			return r_2
+			if r_2.nan?
+				@probability = 0.2
+				return @probability
+			else
+				return r_2.round(2)
+			end
+
 
 		rescue Math::DomainError
 			return 0

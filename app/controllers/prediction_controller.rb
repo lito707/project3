@@ -4,8 +4,10 @@ class PredictionController < ApplicationController
   	@lat = params[:lat].to_f
   	@long = params[:long].to_f
   	@period = params[:period].to_i
-  	pred = Prediction.new
-  	@predictions, @probabilities = pred.predict_by_coordinates(@lat, @long, @period)
+
+    #@predictions_n_probs = [] 
+  	@predictions, @probabilities = Prediction.new.predict_by_coordinates(@lat, @long, @period)
+
 
   end
 
@@ -14,11 +16,16 @@ class PredictionController < ApplicationController
   	code = params[:post_code].to_i
     #amount of periods to make a prediction
   	@period = params[:period].to_i
-    # find the postcode id for a postcode(code_id)
-  	@postcode = Postcode.all.find_by(code_id: code)
-    @all_data = []
-    @postcode.locations.each do |location|
-      @all_data << [location].concat(Prediction.new.predict_by_coordinates(location.lat, location.long, @period))
+
+    if Postcode.all.find_by(code_id: code)==nil
+        flash[:notice] = "Postcode not available"
+    else
+    	@postcode = Postcode.all.find_by(code_id: code)
+      @all_data = []
+
+      @postcode.locations.each do |location|
+        @all_data << [location].concat(Prediction.new.predict_by_coordinates(location.lat, location.long, @period))
+      end
     end
   end
 end
