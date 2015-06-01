@@ -1,6 +1,7 @@
 class Prediction < ActiveRecord::Base
 
-	# predict weather from a lattitude and longitude parameters for a period asked
+	# predict weather from a lattitude and longitude parameters
+	# for a period asked
 	def predict_by_coordinates(lat, long, period)
 		locations_w_dist = get_closest_locations(lat, long)
 
@@ -28,16 +29,17 @@ class Prediction < ActiveRecord::Base
 		end
 	end
 
+	# determine the weighted distances for a location
 	def get_factors(locations_w_dist)
 		sum_distances = (0...locations_w_dist.length).inject(0) { |sum, i| sum + locations_w_dist[i][1] }
 		dist1 = locations_w_dist[0][1]
 		dist2 = locations_w_dist[1][1]
 		dist3 = locations_w_dist[2][1]
-
 		return [dist1/sum_distances, dist2/sum_distances, dist3/sum_distances]
 	end
 
-	# get an array of 4 arrays with the predicted values of wind speed, wind dir, temp and rainfall
+	# get an array of 4 arrays with the predicted values of wind speed, wind dir,
+	# temp and rainfall
 	def get_all_predictions(location, period)
 		data = location_data(location, period)
 
@@ -46,7 +48,8 @@ class Prediction < ActiveRecord::Base
 		wind_speed_model = find_model(data[:wind_speed])
 		temperature_model = find_model(data[:temperature])
 
-		probabilities = [rain_model[:probability],wind_dir_model[:probability],wind_speed_model[:probability],temperature_model[:probability]]
+		probabilities = [rain_model[:probability],wind_dir_model[:probability],
+								wind_speed_model[:probability],temperature_model[:probability]]
 
 		a = predict(rain_model, period).map {|x| x.round(2)}
 		b = predict(wind_dir_model, period).map {|x| x.round(2)}

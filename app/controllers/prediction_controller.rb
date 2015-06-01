@@ -1,4 +1,5 @@
 class PredictionController < ApplicationController
+  #predict for a specific latitude and longitude
   def by_lat_long
   	@lat = params[:lat].to_f
   	@long = params[:long].to_f
@@ -7,10 +8,13 @@ class PredictionController < ApplicationController
     #@predictions_n_probs = [] 
   	@predictions, @probabilities = Prediction.new.predict_by_coordinates(@lat, @long, @period)
 
+
   end
 
+  #predict for the locations belonging to a postcode
   def by_postcode
   	code = params[:post_code].to_i
+    #amount of periods to make a prediction
   	@period = params[:period].to_i
 
     if Postcode.all.find_by(code_id: code)==nil
