@@ -5,7 +5,7 @@ class PredictionController < ApplicationController
   	@period = params[:period].to_i
 
   	pred = Prediction.new
-  	@probabilities, @predictions = pred.predict_by_coordinates(@lat, @long, @period)
+  	@predictions, @probabilities = pred.predict_by_coordinates(@lat, @long, @period)
 
   end
 
@@ -21,6 +21,7 @@ class PredictionController < ApplicationController
     @postcode.locations.each_with_index do |location, i|
       @locations[i] = location
       @predictions_n_probs[i] = Prediction.new.predict_by_coordinates(location.lat, location.long, @period)
+      puts @locations
     end
   end
 end

@@ -1,4 +1,6 @@
 class Prediction < ActiveRecord::Base
+
+	# predict weather from a lattitude and longitude parameters for a period asked
 	def predict_by_coordinates(lat, long, period)
 		locations_w_dist = get_closest_locations(lat, long)
 
@@ -33,7 +35,8 @@ class Prediction < ActiveRecord::Base
 		return [dist1/sum_distances, dist2/sum_distances, dist3/sum_distances]
 	end
 
-	def get_all_predictions(location, period) # get an array of 4 arrays with the predicted values of wind speed, wind dir, temp and rainfall
+	# get an array of 4 arrays with the predicted values of wind speed, wind dir, temp and rainfall
+	def get_all_predictions(location, period)
 		data = location_data(location, period)
 
 		rain_model = find_model(data[:rain])
@@ -52,7 +55,7 @@ class Prediction < ActiveRecord::Base
 	end
 
 	def location_data(location, period)
-		
+
 		raw_data = {:rain=>[],:wind_dir=>[],:wind_speed=>[],:temperature=>[]}
 
 		records = location.data.last(period)
@@ -89,9 +92,9 @@ class Prediction < ActiveRecord::Base
 			(0..period/10).to_a.each {|i| predictions[i] = model[:coeffs][0]*(Math::E**(model[:coeffs][1]*x[i]))}
 		when 'logarithmic'
 			(0..period/10).to_a.each {|i| predictions[i] = model[:coeffs][0] + (model[:coeffs][1]*Math::log(x[i]))}
-		end	
+		end
 
-		return predictions	
+		return predictions
 	end
 
 	def get_closest_locations(lat, long)
@@ -108,7 +111,7 @@ class Prediction < ActiveRecord::Base
 		(0...3).to_a.each do |i|
 			closest_locations << dist_in_order[i]
 		end
-		
+
 		return closest_locations # Returns an array of locations and its distances [[location, distance], ...]
 	end
 

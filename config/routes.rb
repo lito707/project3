@@ -1,18 +1,12 @@
 Rails.application.routes.draw do
-  get 'data/retrieve_data'
-
-  get 'data/get_location_data'
-
-  get 'location/retrieve_locations' => 'location#index'
-
-  get 'prediction/retrieve_prediction'
 
   get '/weather/prediction/:lat/:long/:period' => 'prediction#by_lat_long', constraints: { lat: /[^\/]+/, long: /[^\/]+/ }, defaults: { format: :json }
   get '/weather/prediction/:post_code/:period' => 'prediction#by_postcode', defaults: { format: :json }
 
-  get '/weather/data/:parameter/:date(.:format)' => 'data#by_location_id',defaults: { format: :json }
+  get '/weather/data/:field/:date(.:format)' => 'data#by_field',defaults: { format: :json }
 
-  get '/weather/locations' => 'location#retrieve_locations',defaults: { format: :json }
+  get '/w
+  eather/locations' => 'location#retrieve_locations',defaults: { format: :json }
 
 
   # The priority is based upon order of creation: first created -> highest priority.
