@@ -21,7 +21,7 @@ class DataController < ApplicationController
 			end
 		else
 			@title="by Location"
-			if Location.all.find_by(location_idgit pu: @field) == nil
+			if Location.all.find_by(location_id: @field) == nil
 				flash[:notice] = 'Location not available'
 			else
 				location=Location.all.find_by(location_id: @field)
@@ -38,6 +38,6 @@ end
 # helper to identify if a string is alpha or numeric
 class String
 	def is_integer?
-		self.to_i.to_s
+		self.to_i.to_s == self
 	end
 end
