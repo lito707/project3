@@ -11,14 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150526021512) do
+ActiveRecord::Schema.define(version: 20150601115033) do
 
   create_table "data", force: :cascade do |t|
     t.float    "rainfall"
     t.string   "wind_direction"
     t.float    "wind_speed"
     t.float    "temperature"
-    t.integer  "postcode_id"
     t.integer  "location_id"
     t.string   "current_condition"
     t.datetime "created_at",        null: false
@@ -29,7 +28,6 @@ ActiveRecord::Schema.define(version: 20150526021512) do
     t.float    "lat"
     t.float    "long"
     t.string   "location_id"
-    t.date     "last_update"
     t.integer  "postcode_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
@@ -47,11 +45,8 @@ ActiveRecord::Schema.define(version: 20150526021512) do
   end
 
   create_table "regressions", force: :cascade do |t|
-    t.float    "coeffs"
-    t.string   "reg_type"
-    t.float    "probability"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "scrappers", force: :cascade do |t|
