@@ -51,8 +51,8 @@ class Prediction < ActiveRecord::Base
 		probabilities = [rain_model[:probability],wind_dir_model[:probability],
 								wind_speed_model[:probability],temperature_model[:probability]]
 
-		a = predict(rain_model, period).map {|x| x.round(2)}
-		b = predict(wind_dir_model, period).map {|x| x.round(2)}
+		a = predict(rain_model, period).map {|x| if x<0; x = 0;	else; x.round(2); end}
+		b = predict(wind_dir_model, period).map {|x| (x%360).round(2)}
 		c = predict(wind_speed_model, period).map {|x| x.round(2)}
 		d = predict(temperature_model, period).map {|x| x.round(2)}
 
@@ -78,7 +78,6 @@ class Prediction < ActiveRecord::Base
 		end
 
 		return raw_data
-
 	end
 
 	def find_model(data)
@@ -125,8 +124,4 @@ class Prediction < ActiveRecord::Base
 		return closest_locations # Returns an array of locations and its distances [[location, distance], ...]
 	end
 
-	def get_location(lat, long)
-		locations = Location.all
-		return locations.find {|location| location.lat == lat && location.long == long}
-	end
 end

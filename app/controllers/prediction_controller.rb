@@ -7,8 +7,6 @@ class PredictionController < ApplicationController
 
     #@predictions_n_probs = [] 
   	@predictions, @probabilities = Prediction.new.predict_by_coordinates(@lat, @long, @period)
-
-
   end
 
   #predict for the locations belonging to a postcode
@@ -26,6 +24,7 @@ class PredictionController < ApplicationController
       @postcode.locations.each do |location|
         @all_data << [location].concat(Prediction.new.predict_by_coordinates(location.lat, location.long, @period))
       end
+      puts @all_data
     end
   end
 end

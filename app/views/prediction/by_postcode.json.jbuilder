@@ -45,6 +45,7 @@ else
 				end
 				j += 1
 			end
+			j = 0
 		end
 	end
 end
