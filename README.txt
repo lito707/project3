@@ -4,4 +4,8 @@ This rails app will run with the following commands:
  rake db:create
  rake db:migrate
  rake db:seed
- rails s
+ rails server
+
+ Note:
+-In order to test prediction the data base should at least be run 10 minutes
+to have data to perform its predictions.
